@@ -26,7 +26,6 @@ implementation{
     bool _radioBusy = FALSE;
     message_t _packet;
    
-
     event void Boot.booted(){
         call AMControl.start();
     }
@@ -81,10 +80,10 @@ implementation{
         if(result == SUCCESS)
         {
             if(val < 1000) {
-                SendMsg(GO_STRAIGHT);
+               SendMsg(TURN_LEFT);                
             }
             else if(val > 3000) {
-                SendMsg(TURN_BACK);
+               SendMsg(TURN_RIGHT);
             }
 	    }
 	}
@@ -94,10 +93,10 @@ implementation{
 	  if(result == SUCCESS)
 	    {
             if(val < 1000) {
-                SendMsg(TURN_LEFT);
+                SendMsg(GO_STRAIGHT);
             }
             else if(val > 3000) {
-                SendMsg(TURN_RIGHT);
+                SendMsg(TURN_BACK);
             }
             else{
                 SendMsg(STOP);

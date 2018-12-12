@@ -28,5 +28,4 @@ implementation{
     App.AMPacket -> AMSenderC;
     App.AMSend -> AMSenderC;
     App.AMControl -> ActiveMessageC;
-    //App.Receive -> AMReceiverC;
 }

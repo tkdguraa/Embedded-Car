@@ -1,6 +1,5 @@
 interface Car
 {
-	command void transmit_cmd();
     command void start();
 	command void angle_up();
 	command void angle_down();

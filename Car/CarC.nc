@@ -16,7 +16,7 @@ implementation{
     uint16_t origin_angle = 1800;
     uint8_t instruction, transmit_s;
     uint16_t data;
-    msp430_uart_union_config_t _config = {
+    msp430_uart_union_config_t config1 = {
         {
             utxe: 1,
             urxe: 1,
@@ -38,21 +38,18 @@ implementation{
         }
     };
     command void Car.start(){
-        while (!(call Resource.request() == SUCCESS)){
-        }
-        busy = TRUE;
+       busy = TRUE;
+       transmit_s = 0;
         //setting original angle;
-        instruction = ANGLE_ONE;
-        data = 1800;
-        call Resource.request();
+       instruction = ANGLE_ONE;
+       data = 1800;
+       call Resource.request();
     }
 
     command void Car.forward(){
-        if(busy){
-            return;
-        }
         busy = TRUE;
         instruction = GO_STRAIGHT;
+        data = 300;
         call Resource.request();
     }
     command void Car.left(){
@@ -61,6 +58,7 @@ implementation{
         }
         busy = TRUE;
         instruction = TURN_LEFT;
+        data = 300;
         call Resource.request();
     }
     command void Car.right(){
@@ -69,6 +67,7 @@ implementation{
         }
         busy = TRUE;
         instruction = TURN_RIGHT;
+        data = 300;
         call Resource.request();
     }
     command void Car.back(){
@@ -77,6 +76,7 @@ implementation{
         }
         busy = TRUE;
         instruction = TURN_BACK;
+        data = 300;
         call Resource.request();
     }
     command void Car.angle_up(){
@@ -111,22 +111,13 @@ implementation{
         instruction = STOP;
         call Resource.request();
     }
-    event void Resource.granted(){
-		call HplMsp430Usart.setModeUart(&_config);
-		call HplMsp430Usart.enableUart();
-		atomic U0CTL&=~SYNC;
-        transmit_s = 0;
-        call Car.transmit_cmd();
-        call Resource.release();
-        busy = FALSE;
-	}
-    command void Car.transmit_cmd() {
+    void transmit_cmd() {
         switch (transmit_s) {
         case 0:
-            call HplMsp430Usart.tx(1);
+            call HplMsp430Usart.tx(0x01);
             break;
         case 1:
-            call HplMsp430Usart.tx(2);
+            call HplMsp430Usart.tx(0x02);
             break;
         case 2:
             call HplMsp430Usart.tx(instruction);
@@ -153,10 +144,19 @@ implementation{
         if (transmit_s < 8) {
             while (!(call HplMsp430Usart.isTxEmpty())) {
             }
-            call Car.transmit_cmd();
+           transmit_cmd();
         }
         else {
             transmit_s = 0;
+            call Resource.release();
         }
-  }
+    }
+    event void Resource.granted(){
+		call HplMsp430Usart.setModeUart(&config1);
+		call HplMsp430Usart.enableUart();
+		atomic U0CTL&=~SYNC;
+        transmit_s = 0;
+        transmit_cmd();
+        busy = FALSE;
+	}
 }
