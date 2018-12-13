@@ -1,13 +1,13 @@
 <tos_image>
   <ident>
-    <username>lee</username>
-    <uidhash>3E5637E1L</uidhash>
-    <userhash>9CD0EE40L</userhash>
-    <timestamp>5C0E3429L</timestamp>
-    <hostname>lee-VirtualBox</hostname>
-    <platform>telosb</platform>
-    <deluge_support>no</deluge_support>
     <appname>BlinkToRadioApp</appname>
+    <userhash>9CD0EE40L</userhash>
+    <uidhash>30AB4085L</uidhash>
+    <timestamp>5C11EEDBL</timestamp>
+    <deluge_support>no</deluge_support>
+    <username>lee</username>
+    <platform>telosb</platform>
+    <hostname>lee-VirtualBox</hostname>
   </ident>
   <image format="ihex">
 :104000005542200135D0085A8245A6123140003968

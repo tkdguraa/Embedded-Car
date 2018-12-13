@@ -1,5 +1,7 @@
 #include <msp430usart.h>
 #include "BlinkToRadio.h"
+#include <stdio.h>
+#include <string.h>
 
 configuration BlinkToRadioAppC{
 
@@ -16,7 +18,15 @@ implementation{
     components new Msp430Usart0C() as Msp430Usart0C;
     components new Msp430Uart0C() as Uart;
     components HplMsp430GeneralIOC as GIO;
-    
+    components SerialPrintfC;
+
+    components new TimerMilliC(); 
+    components new HamamatsuS10871TsrC() as LightSensor;
+    components new SensirionSht11C() as TempSensor;
+
+    App.Timer -> TimerMilliC;
+    App.LightRead -> LightSensor;
+    App.TempRead -> TempSensor.Temperature;
     App.Boot -> MainC;
     App.Leds -> LedsC;
     App.AMControl -> ActiveMessageC;
